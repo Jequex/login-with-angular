@@ -8,16 +8,16 @@ exports.loginUser = async (req, res) => {
 
     const { username, password, email } = req.body;
 
-    const user = await query("SELECT * FROM users WHERE username = ?", [username]);
+    const user = await query("SELECT * FROM users WHERE username = ? OR email = ?", [username, email]);
 
     if (user.length < 1) {
-        return res.send({ message: "invalid credentials" });
+        return res.status(400).send({ message: "invalid credentials" });
     }
 
     const checkPassword = await bcrypt.compare(password, user[0].password);
 
     if (!checkPassword) {
-        return res.send({ message: "invalid credentials" });
+        return res.status(400).send({ message: "invalid credentials" });
     }
 
     jwt.sign(user[0].id, "get_out", (err, token) => {
@@ -38,10 +38,9 @@ exports.loginUser = async (req, res) => {
 exports.getUser = async (req, res) => {
 
     try {
-        
-    const id = req.user;
-    const user = await query("SELECT username FROM users WHERE id = ?", [id]);
-    res.send({ data: user });
+        const id = req.user;
+        const user = await query("SELECT username FROM users WHERE id = ?", [id]);
+        res.send({ data: user });
 
     } catch (error) {
         console.log(error);

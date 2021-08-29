@@ -8,7 +8,7 @@ import { TokenStorageService } from '../services/token-storage.service';
   styleUrls: ['./login.component.css']
 })
 
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   form: any = {
     username: null,
     password: null,
@@ -20,7 +20,7 @@ export class LoginComponent {
   errorMessage = '';
 
   constructor(private authService: AuthService, private tokenStorage: TokenStorageService) { }
-  
+
   ngOnInit(): void {
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
@@ -32,7 +32,7 @@ export class LoginComponent {
 
     this.authService.login(username, password, email).subscribe(
       data => {
-        this.tokenStorage.saveToken(data.accessToken);
+        this.tokenStorage.saveToken(data.token);
         this.tokenStorage.saveUser(data);
 
         this.isLoggedIn = true;
@@ -40,9 +40,9 @@ export class LoginComponent {
         this.reloadPage();
       },
       err => {
-        this.errorMessage = err.console.error.message;
+        this.errorMessage = err.error.message;
         this.isLoginFailed = true;
-        
+
       }
     )
   }

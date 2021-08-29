@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand navbar-dark bg-dark">
         <a href="#" class="navbar-brand">APPLICATION HAHAHA</a>
 
-        <ul class="navbar-nav mr-auto" routerLinkActive="active">
+        <ul class="navbar-nav mr-auto" routerLinkActive="active" *ngIf="isLoggedIn">
 
             <li class="nav-item">
                 <a href="/" class="nav-link" routerLink="dashboard">Dashboard</a>
@@ -11,7 +11,7 @@
         </ul>
 
         <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
-            
+
             <li class="nav-item">
                 <a href="/signup" class="nav-link" routerLink="signup">Sign Up</a>
             </li>

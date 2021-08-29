@@ -18,12 +18,14 @@ export class AppComponent implements OnInit{
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
 
+
       this.username = user.username;
     }
   }
 
   logout(): void{
     this.tokenStorageService.signOut();
+    console.log(this.isLoggedIn)
     window.location.reload();
   }
 }
