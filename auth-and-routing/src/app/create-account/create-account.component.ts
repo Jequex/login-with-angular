@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { TokenStorageService } from '../services/token-storage.service';
+import { User } from '../models/User';
 
 @Component({
   selector: 'app-create-account',
@@ -8,12 +9,14 @@ import { TokenStorageService } from '../services/token-storage.service';
   styleUrls: ['./create-account.component.css']
 })
 export class CreateAccountComponent implements OnInit {
-  form: any = {
-    username: null,
-    fullname: null,
-    email: null,
-    password: null
+  form: User = {
+    username: '',
+    fullname: '',
+    email: '',
+    password: '',
+    password2: ''
   };
+  isLoading = false;
   isSuccessful = false;
   isSignUpFailed = false;
   errorMessage = '';
@@ -28,25 +31,21 @@ export class CreateAccountComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const { username, email, password, fullname } = this.form;
-    this.authService.register(username, password, email, fullname).subscribe(
+    this.isLoading = true;
+    this.authService.register(this.form).subscribe(
       data => {
         this.isSuccessful = true;
         this.isSignUpFailed = false;
         this.tokenStorageService.saveToken(data.token);
         this.isLoggedIn = true;
-        this.reloadPage();
+        this.isLoading = false;
       },
       err => {
         this.errorMessage = err.error.message;
         this.isSignUpFailed = true;
+        this.isLoading = false;
       }
     )
-  }
-
-  
-  reloadPage(): void{
-    window.location.reload();
   }
 
 }

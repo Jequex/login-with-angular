@@ -7,7 +7,7 @@
         class="profile-img-card"
         />
         <form 
-        *ngIf="!isLoggedIn || !isSuccessful"
+        *ngIf="!isLoggedIn && !isSuccessful"
         name="form"
         (ngSubmit) = "f.form.valid && onSubmit()"
         #f = "ngForm"
@@ -98,7 +98,28 @@
             </div>
 
             <div class="form-group">
-                <button class="btn btn-primary btn-block">Sign Up</button>
+                <label for="password2">Confirm Password</label>
+                <input
+                type="password"
+                class="form-control"
+                name="password2"
+                [(ngModel)] = "form.password2"
+                required
+                minlength="6"
+                #password2 = "ngModel"
+                />
+                <div class="alert-danger" *ngIf="password2.errors && f.submitted">
+                    <div *ngIf="password2.errors.required">You Need To Confirm Your Password</div>
+                    <div *ngIf="password2 !== password">
+                        Passwords do not match
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="button" class="btn btn-primary btn-block">
+                    {{isLoading ? 'Loading...' : 'Sign Up'}}
+                </button>
             </div>
 
             <div class="alert alert-warning" *ngIf="f.submitted && isSignUpFailed">

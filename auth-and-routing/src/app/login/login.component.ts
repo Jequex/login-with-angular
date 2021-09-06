@@ -11,10 +11,10 @@ import { TokenStorageService } from '../services/token-storage.service';
 export class LoginComponent implements OnInit {
   form: any = {
     username: null,
-    password: null,
-    email: null
+    password: null
   };
 
+  isLoading = false;
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
@@ -28,26 +28,23 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void{
-    const { username, password, email } = this.form;
+    this.isLoading = true;
 
-    this.authService.login(username, password, email).subscribe(
+    this.authService.login(this.form).subscribe(
       data => {
         this.tokenStorage.saveToken(data.token);
         this.tokenStorage.saveUser(data);
 
+        this.isLoading = false;
         this.isLoggedIn = true;
         this.isLoginFailed = false;
-        this.reloadPage();
       },
       err => {
         this.errorMessage = err.error.message;
         this.isLoginFailed = true;
+        this.isLoading = false;
 
       }
     )
-  }
-
-  reloadPage(): void{
-    window.location.reload();
   }
 }

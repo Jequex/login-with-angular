@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     this.userService.getPrivateContent().subscribe(
       data => {
-        this.tokenStorageService.saveUser(data.data[0].username);
+        this.tokenStorageService.saveUser(data.data[0].full_name);
         this.user = this.tokenStorageService.getUser();
       },
       err => {console.log(err)}
