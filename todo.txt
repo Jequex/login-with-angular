@@ -1,0 +1,3 @@
+* redirect after login/signup
+* Move the x-auth-token to an HTTP Interceptor
+* Please, use webstorm.I am seeing some error on create-account.component.html and login.component.html that webstorm would have showed you
