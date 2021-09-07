@@ -1,4 +1,4 @@
-<div class="col-md-12">
+<div class="col-md-12" *ngIf = "!isLoggedIn && !isSuccessful">
     <div class="card card-container">
         <img 
         id="profile-img"
@@ -6,8 +6,7 @@
         alt="avatar"
         class="profile-img-card"
         />
-        <form 
-        *ngIf="!isLoggedIn && !isSuccessful"
+        <form
         name="form"
         (ngSubmit) = "f.form.valid && onSubmit()"
         #f = "ngForm"
@@ -117,7 +116,7 @@
             </div>
 
             <div class="form-group">
-                <button type="button" class="btn btn-primary btn-block">
+                <button type="button" (click)="onSubmit()" class="btn btn-primary btn-block">
                     {{isLoading ? 'Loading...' : 'Sign Up'}}
                 </button>
             </div>

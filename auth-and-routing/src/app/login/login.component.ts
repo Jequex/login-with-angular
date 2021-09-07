@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { TokenStorageService } from '../services/token-storage.service';
 
@@ -18,8 +19,9 @@ export class LoginComponent implements OnInit {
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
+  public redirectURL: string = 'dashboard';
 
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService) { }
+  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router) { }
 
   ngOnInit(): void {
     if (this.tokenStorage.getToken()) {
@@ -38,6 +40,9 @@ export class LoginComponent implements OnInit {
         this.isLoading = false;
         this.isLoggedIn = true;
         this.isLoginFailed = false;
+        if (this.redirectURL) {
+          this.router.navigate([this.redirectURL])
+        }
       },
       err => {
         this.errorMessage = err.error.message;

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { TokenStorageService } from '../services/token-storage.service';
 import { User } from '../models/User';
@@ -16,13 +17,14 @@ export class CreateAccountComponent implements OnInit {
     password: '',
     password2: ''
   };
+  redirectURl = 'dashboard';
   isLoading = false;
   isSuccessful = false;
   isSignUpFailed = false;
   errorMessage = '';
   isLoggedIn = false;
 
-  constructor(private authService: AuthService, private tokenStorageService: TokenStorageService) { }
+  constructor(private authService: AuthService, private tokenStorageService: TokenStorageService, private router: Router) { }
 
   ngOnInit(): void {
     if (this.tokenStorageService.getToken()) {
@@ -39,6 +41,7 @@ export class CreateAccountComponent implements OnInit {
         this.tokenStorageService.saveToken(data.token);
         this.isLoggedIn = true;
         this.isLoading = false;
+        this.router.navigate([this.redirectURl]);
       },
       err => {
         this.errorMessage = err.error.message;

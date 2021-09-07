@@ -14,12 +14,8 @@ export class UserService {
   constructor(private http: HttpClient, private tokenStorage: TokenStorageService) { }
 
   token = this.tokenStorage.getToken();
-    
-  httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json', 'x-auth-token': `${this.token}`})
-  }
 
   getPrivateContent(): Observable<any> {
-    return this.http.get(API_URL + 'auth', this.httpOptions);
+    return this.http.get(API_URL + 'auth');
   }
 }
